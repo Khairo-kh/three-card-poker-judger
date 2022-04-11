@@ -1,7 +1,7 @@
 import { Hand } from '../hand/Hand';
 import { Player } from './Player';
 
-class PokerPlayer implements Player {
+export class PokerPlayer implements Player {
   private _id: number;
   private _score: number;
   private _hand: Hand;
