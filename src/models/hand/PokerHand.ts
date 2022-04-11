@@ -17,7 +17,7 @@ export class PokerHand implements Hand {
   set cards(cards: Card[]) {
     this._cards = cards;
   }
-  
+
   sortCards(rankCriteria: Rank): Array<Card> {
     const currentHand = [...this._cards];
     if (currentHand.length < 3) {
@@ -34,8 +34,6 @@ export class PokerHand implements Hand {
         : suitCardsMap.set(card.suit, [...targetCollection, card]);
     });
     suitCardsMap = new Map<Suit, Card[]>([...suitCardsMap.entries()].sort());
-
-    console.log('paaaam', suitCardsMap);
 
     suitCardsMap.forEach((group: Card[]) => {
       sortedHand = sortedHand.concat(
