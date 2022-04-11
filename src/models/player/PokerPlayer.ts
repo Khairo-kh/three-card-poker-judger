@@ -2,28 +2,30 @@ import { Hand } from '../hand/Hand';
 import { Player } from './Player';
 
 class PokerPlayer implements Player {
-  public id: number;
-  private score: number;
-  private hand: Hand;
+  private _id: number;
+  private _score: number;
+  private _hand: Hand;
 
   constructor(id: number, hand: Hand) {
-    this.id = id;
-    this.hand = hand;
-    this.score = 0;
+    this._id = id;
+    this._hand = hand;
+    this._score = 0;
   }
 
-  public getHand(): Hand {
-    return this.hand;
+  get id() {
+    return this._id;
   }
-  public setHand(hand: Hand): Player {
-    this.hand = hand;
-    return this;
+
+  get hand(): Hand {
+    return this._hand;
   }
-  public setScore(score: number): Player {
-    this.score = score;
-    return this;
+  set hand(hand: Hand) {
+    this._hand = hand;
   }
-  public getScore(): number {
-    return this.score;
+  set score(score: number) {
+    this._score = score;
+  }
+  get score(): number {
+    return this._score;
   }
 }
