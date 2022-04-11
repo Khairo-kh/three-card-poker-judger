@@ -1,6 +1,6 @@
-import { Card } from '../types/Card';
-import { CardName } from '../types/CardName';
-import { Rank } from '../types/Rank';
+import { Card } from './Card';
+import { CardName } from './CardName';
+import { Rank } from './Rank';
 
 export class RankedCardSet implements Rank {
   public rankArray: CardName[] = [
@@ -19,10 +19,10 @@ export class RankedCardSet implements Rank {
     CardName.Ace,
   ];
 
-  getRank(card: Card): number {
+  public getRank(card: Card): number {
     return this.rankArray.indexOf(card.cardName);
   }
-  isHigherThan(firstCard: Card, secondCard: Card): boolean {
+  public isHigherThan(firstCard: Card, secondCard: Card): boolean {
     return this.getRank(firstCard) > this.getRank(secondCard);
   }
 }

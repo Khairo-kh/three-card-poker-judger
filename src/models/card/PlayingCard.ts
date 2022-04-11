@@ -1,8 +1,8 @@
-import { Card } from '../types/Card';
-import { CardName } from '../types/CardName';
-import { Suit } from '../types/Suits';
+import { Card } from './Card';
+import { CardName } from './CardName';
+import { Suit } from './Suits';
 
-class PlayingCard implements Card {
+export class PlayingCard implements Card {
   public suit: Suit;
   public cardName: CardName;
 
