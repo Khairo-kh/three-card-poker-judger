@@ -5,4 +5,5 @@ export enum PokerHandResult {
   Flush = 'Flush',
   Pair = 'Pair',
   HighCard = 'HighCard',
+  Nothing = 'N/A',
 }

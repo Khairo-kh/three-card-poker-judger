@@ -20,7 +20,7 @@ export class RankedCardSet implements Rank {
   ];
 
   public getRank(card: Card): number {
-    return this.rankArray.indexOf(card.cardName);
+    return this.rankArray.indexOf(card.cardName) + 1;
   }
   public isHigherThan(firstCard: Card, secondCard: Card): boolean {
     return this.getRank(firstCard) > this.getRank(secondCard);

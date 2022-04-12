@@ -12,6 +12,6 @@ export class PlayingCard implements Card {
   }
 
   public toString(): string {
-    return `${this.cardName}${this.suit}`;
+    return `${this.cardName}`;
   }
 }
