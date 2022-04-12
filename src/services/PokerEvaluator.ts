@@ -130,7 +130,6 @@ export class PokerEvaluator implements HandEvaluator {
     const playerCardsMap = new Map<Player, Card[]>();
 
     players.forEach((player) => {
-      console.log(player.hand.cards.shift());
       highestCardValue.set(player, this._rankCriteria.getRank(player.hand.cards.shift() as Card));
       playerCardsMap.set(player, player.hand.cards);
     });
@@ -157,7 +156,6 @@ export class PokerEvaluator implements HandEvaluator {
           playerCardsMap.delete(val[0]);
         }
         if (!(val[0].hand.cards.length === 0)) {
-          console.log('IN ', val[0].hand.cards.shift());
           highestCardValue.set(val[0], this._rankCriteria.getRank(val[0].hand.cards.shift() as Card));
         }
       }
