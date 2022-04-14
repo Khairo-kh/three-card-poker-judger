@@ -18,7 +18,7 @@ export class RankedCardSet implements Rank {
     CardName.King,
     CardName.Ace,
   ];
-
+  
   public getRank(card: Card): number {
     return this.rankArray.indexOf(card.cardName) + 1;
   }
