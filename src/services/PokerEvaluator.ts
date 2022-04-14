@@ -125,47 +125,41 @@ export class PokerEvaluator implements HandEvaluator {
     return result;
   }
 
-  private tieBreaker(players: Player[]) {
-    const highestCardValue = new Map<Player, number>();
-    const playerCardsMap = new Map<Player, Card[]>();
+  private tieBreaker(players: Player[]): Player[] {
+    const winnersMap = new Map<number, Player>(); // id -> player
+    const playerCards = new Map<number, Card[]>(); // id -> player cards
 
     players.forEach((player) => {
-      highestCardValue.set(player, this._rankCriteria.getRank(player.hand.cards.shift() as Card));
-      playerCardsMap.set(player, player.hand.cards);
+      winnersMap.set(player.id, player);
+      playerCards.set(player.id, [...player.hand.cards]);
     });
 
-    const highest: [Player, number] = [players[0], highestCardValue.get(players[0]) as number];
-    while (playerCardsMap.size > 1) {
-      for (const item of highestCardValue.entries()) {
-        if (item[1] > highest[1]) {
-          highestCardValue.delete(highest[0]);
-          playerCardsMap.delete(highest[0]);
-          highest[0] = item[0];
-        } else if (item[1] < highest[1]) {
-          highestCardValue.delete(item[0]);
-          playerCardsMap.delete(item[0]);
-        }
-      }
+    for (let index = 2; index >= 0; index--) {
+      const highest = { playerId: -1, highestCard: -1 };
 
-      if (highestCardValue.size === 1) {
-        return highest[0];
-      }
+      for (const player of playerCards.entries()) {
+        const card = player[1].pop() as Card;
 
-      for (const val of playerCardsMap.entries()) {
-        if (val[1].length === 0) {
-          playerCardsMap.delete(val[0]);
-        }
-        if (!(val[0].hand.cards.length === 0)) {
-          highestCardValue.set(val[0], this._rankCriteria.getRank(val[0].hand.cards.shift() as Card));
+        const possibleHighest = this._rankCriteria.getRank(card);
+        if (possibleHighest > highest.highestCard) {
+          if (winnersMap.get(highest.playerId)) {
+            winnersMap.delete(highest.playerId);
+            playerCards.delete(highest.playerId);
+          }
+          highest.playerId = player[0];
+          highest.highestCard = possibleHighest;
+        } else if (possibleHighest < highest.highestCard) {
+          winnersMap.delete(player[0]);
+          playerCards.delete(player[0]);
         }
       }
     }
-    return highest[0];
+    return Array.from(winnersMap.values());
   }
 
-  public winner(players: Player[]): Player {
+  public winner(players: Player[]): Player[] {
     let highestScoreYet = PokerHandResult.Nothing;
-    let winner: Player;
+    let winner: Player[] = [];
     const scorePlayerMap = new Map<PokerHandResult, Player[]>();
     players.forEach((player) => {
       const currentScore = player.score.scoreName;
@@ -181,8 +175,8 @@ export class PokerEvaluator implements HandEvaluator {
     const finalContestants = scorePlayerMap.get(highestScoreYet);
 
     if (finalContestants?.length === 1) {
-      winner = finalContestants[0];
-      return finalContestants[0];
+      winner.push(finalContestants[0]);
+      return winner;
     }
 
     winner = this.tieBreaker(finalContestants as Player[]);
