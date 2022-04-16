@@ -88,7 +88,7 @@ export class PokerEvaluator implements HandEvaluator {
         highest = frequency.get(value) as number;
       }
     }
-    return highest > 1;
+    return highest === 2;
   }
 
   public isStraightFlush(cardsMap: Map<Suit, PlayingCard[]>): boolean {
@@ -125,22 +125,61 @@ export class PokerEvaluator implements HandEvaluator {
     return result;
   }
 
-  private tieBreaker(players: Player[]): Player[] {
-    const winnersMap = new Map<number, Player>(); // id -> player
-    const playerCards = new Map<number, Card[]>(); // id -> player cards
+  private getPairRank(cards: Card[]): Card {
+    const frequency = new Map<string, number>();
+    const resultCards = new Map<string, Card>();
+    let result = '';
+    let highest = 0;
 
+    cards.forEach((card) => {
+      let current = frequency.get(card.toString());
+      if (current) {
+        frequency.set(card.toString(), ++current);
+      } else {
+        frequency.set(card.toString(), 1);
+        resultCards.set(card.toString(), card);
+      }
+    });
+    for (const key of frequency.keys()) {
+      if ((frequency.get(key) as number) > highest) {
+        highest = frequency.get(key) as number;
+        result = key;
+      }
+    }
+    return resultCards.get(result) as Card;
+  }
+
+  private tieBreaker(players: Player[], handType: PokerHandResult): Player[] {
+    const winnersMap = new Map<number, Player>(); // id -> player
+    let playerCards = new Map<number, Card[]>(); // id -> player-cards
     players.forEach((player) => {
       winnersMap.set(player.id, player);
       playerCards.set(player.id, [...player.hand.cards]);
     });
 
+    if (handType === PokerHandResult.Pair) {
+      const pairKickerMap = new Map<number, Card[]>();
+      for (const player of playerCards.entries()) {
+        const pair = this.getPairRank(player[1]);
+        const kicker = player[1].filter((item) => item.cardName !== pair.cardName)[0]
+        pairKickerMap.set(player[0], [kicker, pair]);
+      }
+      playerCards = new Map<number, Card[]>(pairKickerMap);
+
+
+    }
+
     for (let index = 2; index >= 0; index--) {
       const highest = { playerId: -1, highestCard: -1 };
 
       for (const player of playerCards.entries()) {
-        const card = player[1].pop() as Card;
+        if (player[1].length === 0) {
+          continue;
+        }
 
+        const card = player[1].pop() as Card;
         const possibleHighest = this._rankCriteria.getRank(card);
+        
         if (possibleHighest > highest.highestCard) {
           if (winnersMap.get(highest.playerId)) {
             winnersMap.delete(highest.playerId);
@@ -179,7 +218,7 @@ export class PokerEvaluator implements HandEvaluator {
       return winner;
     }
 
-    winner = this.tieBreaker(finalContestants as Player[]);
+    winner = this.tieBreaker(finalContestants as Player[], highestScoreYet);
     return winner;
   }
 
