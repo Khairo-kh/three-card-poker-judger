@@ -9,7 +9,7 @@ export interface Rank {
    * @param card a card object
    * @returns a number corresponding to the value of the card passed
    */
-  getRank(card: Card): number;
+  getRankVal(card: Card): number;
 
   /**
    * This method compares the first card passed to the second

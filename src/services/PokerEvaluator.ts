@@ -26,7 +26,7 @@ export class PokerEvaluator implements HandEvaluator {
     const cards = hand.cards;
     let numericVal = 0;
     cards.forEach((card) => {
-      numericVal += this._rankCriteria.getRank(card);
+      numericVal += this._rankCriteria.getRankVal(card);
     });
     return numericVal;
   }
@@ -36,7 +36,7 @@ export class PokerEvaluator implements HandEvaluator {
     for (const item of cardsMap.values()) {
       cards = cards.concat(item);
     }
-    cards = cards.sort((a, b) => this._rankCriteria.getRank(b) - this._rankCriteria.getRank(a));
+    cards = cards.sort((a, b) => this._rankCriteria.getRankVal(b) - this._rankCriteria.getRankVal(a));
     return cards;
   }
 
@@ -56,7 +56,7 @@ export class PokerEvaluator implements HandEvaluator {
 
     // Checking for a sequence
     for (let i = 0; i + 1 !== cards.length; i++) {
-      result = this._rankCriteria.getRank(cards[i]) === this._rankCriteria.getRank(cards[i + 1]) + 1;
+      result = this._rankCriteria.getRankVal(cards[i]) === this._rankCriteria.getRankVal(cards[i + 1]) + 1;
       if (!result) {
         break;
       }
@@ -161,12 +161,10 @@ export class PokerEvaluator implements HandEvaluator {
       const pairKickerMap = new Map<number, Card[]>();
       for (const player of playerCards.entries()) {
         const pair = this.getPairRank(player[1]);
-        const kicker = player[1].filter((item) => item.cardName !== pair.cardName)[0]
+        const kicker = player[1].filter((item) => item.cardName !== pair.cardName)[0];
         pairKickerMap.set(player[0], [kicker, pair]);
       }
       playerCards = new Map<number, Card[]>(pairKickerMap);
-
-
     }
 
     for (let index = 2; index >= 0; index--) {
@@ -178,8 +176,8 @@ export class PokerEvaluator implements HandEvaluator {
         }
 
         const card = player[1].pop() as Card;
-        const possibleHighest = this._rankCriteria.getRank(card);
-        
+        const possibleHighest = this._rankCriteria.getRankVal(card);
+
         if (possibleHighest > highest.highestCard) {
           if (winnersMap.get(highest.playerId)) {
             winnersMap.delete(highest.playerId);

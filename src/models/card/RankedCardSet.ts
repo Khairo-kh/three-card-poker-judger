@@ -19,10 +19,10 @@ export class RankedCardSet implements Rank {
     CardName.Ace,
   ];
   
-  public getRank(card: Card): number {
+  public getRankVal(card: Card): number {
     return this.rankArray.indexOf(card.cardName) + 1;
   }
   public isHigherThan(firstCard: Card, secondCard: Card): boolean {
-    return this.getRank(firstCard) > this.getRank(secondCard);
+    return this.getRankVal(firstCard) > this.getRankVal(secondCard);
   }
 }

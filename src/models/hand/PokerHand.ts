@@ -22,7 +22,7 @@ export class PokerHand implements Hand {
   sortCards(rankCriteria: Rank): Array<Card> {
     const currentHand = [...this._cards];
     let sortedHand: Array<Card> = [];
-    sortedHand = currentHand.sort((a: Card, b: Card) => rankCriteria.getRank(a) - rankCriteria.getRank(b));
+    sortedHand = currentHand.sort((a: Card, b: Card) => rankCriteria.getRankVal(a) - rankCriteria.getRankVal(b));
     this.cards = sortedHand
     return sortedHand;
   }
