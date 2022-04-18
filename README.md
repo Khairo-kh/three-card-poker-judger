@@ -25,7 +25,7 @@ This project evaluates the result of a three card poker game. The input of the p
 
 We can see on the first line a number representing the number of players. Then, on each line we have an id followed by three cards with a rank and a suit.
 
-The program evaluates the best hand and returns the id of the winning player (player with the best hand). The program also handles all tie situations where player have similar results and breaks the ties based on the requirements provided with the assignment.
+The program evaluates the best hand and returns the id of the winning player (player with the best hand). The program also handles all tie situations where players have similar results and breaks the ties based on the requirements provided with the assignment.
 
 ## How to run the program
 
