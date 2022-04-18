@@ -65,8 +65,7 @@ the root of the project is where everything is connected together to deliver the
 - if the format of the input is wrong other than the capitalization of the cards mentioned the program will throw a custom error message.
 - The program assumes clean input in terms of number of instances the cards passed. For example, there is only one jack of clubs in a 52 card deck and we cannot have two instances of jack of clubs with two different players. However, the program will run and evaluate correctly but it will not be a realistic situation.
 
-<div id="development"></div>
-## Running for development (Optional)
+<h2 id="development">Running for development (Optional)</h2>
 
 To run the project for development please do the following:
 
